@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { HistogramChooser } from "./components/Histogram";
-import type { DataRow } from "./dataTypes";
+import { HistogramChooser } from "./Histogram";
+import type { DataRow } from "../dataTypes";
 
 interface FilteredDataViewProps {
   data: DataRow[];
@@ -38,6 +38,11 @@ export const AccidentTable: React.FC<FilteredDataViewProps> = ({ data }) => {
       key: "vulnerableUserType",
       toString: (type: string) => type,
     },
+    {
+      name:'Distracted By',
+      key:'driverDistractedBy',
+      toString: (distractedBy: string[]) => distractedBy.join(', ')
+    }
   ];
   console.log("Table data:", data);
   return (

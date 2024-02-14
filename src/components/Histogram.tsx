@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  LabelList,
 } from "recharts";
 import type { DataRow } from "../dataTypes";
 const Histogram = ({ data, field }) => {
@@ -14,13 +15,15 @@ const Histogram = ({ data, field }) => {
   const histogramData = processDataForHistogram(data, field);
 
   return (
-    <BarChart width={600} height={300} data={histogramData}>
+    <BarChart width={1200} height={400} data={histogramData}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
-      <Legend />
-      <Bar dataKey="count" fill="#8884d8" />
+   
+      <Bar dataKey="count" fill="#8884d8">
+        <LabelList dataKey="count" position="top" />
+      </Bar>
     </BarChart>
   );
 };
@@ -34,6 +37,7 @@ export const HistogramChooser: React.FC<HistogramChooserProps> = ({ data }) => {
     "driverAge",
     "crashTime",
     "crashHour",
+    "crashMonth",
     "fatalities",
     "pedestrians",
     "cyclists",
@@ -75,9 +79,8 @@ const processDataForHistogram = (data, field) => {
   }
   let returnArray = [];
   for (let key in counts) {
-    returnArray.push(
-      {name : key, count : counts[key]}
-    )
+    returnArray.push({ name: key, count: counts[key] });
   }
+  returnArray.sort((a, b) => a.name > b.name ? 1 : -1);
   return returnArray;
 };

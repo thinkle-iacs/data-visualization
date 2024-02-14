@@ -126,6 +126,7 @@ export type DataRow = {
   wheelchairs: number;
   scooters: number;
   otherVRU: number;
+  crashMonth : number;
 };
 
 export const parseDataRow = (rawData: RawCrashDataRow): DataRow => {
@@ -155,6 +156,7 @@ export const parseDataRow = (rawData: RawCrashDataRow): DataRow => {
     wheelchairs: 0,
     scooters: 0,
     otherVRU: 0,
+    crashMonth : parseDate(rawData["Crash Date"]).getMonth()+1
   };
   for (let i = 0; i < dataRow.vulnerableUserTypes.length; i++) {
     if (dataRow.vulnerableUserTypes[i].includes("Bicyclist")) {
