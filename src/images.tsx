@@ -1,4 +1,4 @@
-import type { ImageInfo } from "./types";
+import type { ImageInfo } from "./dataTypes";
 
 export const images: ImageInfo[] = [
   {
