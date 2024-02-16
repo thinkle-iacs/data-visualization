@@ -20,8 +20,12 @@ const Histogram = ({ data, field }) => {
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
-   
-      <Bar dataKey="count" fill="#8884d8">
+
+      <Bar
+        dataKey="count"
+        fill="#8884d8"
+        onClick={(e) => console.log("Tooltip clicked", e)}
+      >
         <LabelList dataKey="count" position="top" />
       </Bar>
     </BarChart>
@@ -35,6 +39,12 @@ export const HistogramChooser: React.FC<HistogramChooserProps> = ({ data }) => {
   const fields = [
     "cityTownName",
     "driverAge",
+    "severity",
+    "weatherConditions",
+    "light",
+    "event",
+    "speedLimit",
+    "manner",
     "crashTime",
     "crashHour",
     "crashMonth",
@@ -81,6 +91,14 @@ const processDataForHistogram = (data, field) => {
   for (let key in counts) {
     returnArray.push({ name: key, count: counts[key] });
   }
-  returnArray.sort((a, b) => a.name > b.name ? 1 : -1);
+  returnArray.sort((a, b) => {
+    // Sort as numbers if we can
+    if (!isNaN(Number(a.name)) && !isNaN(Number(b.name))) {
+      return Number(a.name) - Number(b.name);
+    } else {
+      // Otherwise sort alphabetically
+      return a.name > b.name ? 1 : -1;
+    }
+  });
   return returnArray;
 };

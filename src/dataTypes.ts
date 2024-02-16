@@ -113,13 +113,20 @@ export type DataRow = {
   crashDate: Date;
   driverDistractedBy: string[];
   vulnerableUserTypes: string[];
-  vulnerableUserType: 'Bicyclist' | 'Pedestrian' | 'Skateboarder' | 'Wheelchair' | 'Scooter' | 'other' | 'multiple';
+  vulnerableUserType:
+    | "Bicyclist"
+    | "Pedestrian"
+    | "Skateboarder"
+    | "Wheelchair"
+    | "Scooter"
+    | "other"
+    | "multiple";
   crashSeverity: string;
   latitude: number;
   longitude: number;
   fatalities: number;
   nonFatalInjuries: number;
-  severity : string;
+  severity: string;
   weatherConditions: string;
   crashTime: number;
   cyclists: number;
@@ -127,8 +134,9 @@ export type DataRow = {
   wheelchairs: number;
   scooters: number;
   otherVRU: number;
-  crashMonth : number;
-  driverAge : number;
+  crashMonth: number;
+  driverAge: number;
+  manner: string;
 };
 
 export const parseDataRow = (rawData: RawCrashDataRow): DataRow => {
@@ -137,11 +145,13 @@ export const parseDataRow = (rawData: RawCrashDataRow): DataRow => {
     crashNumber: parseNumber(rawData["Crash Number"]),
     cityTownName: rawData["City Town Name"],
     crashDate: parseDate(rawData["Crash Date"]),
-    crashHour: parseNumber(rawData["Crash Hour"]),
     driverDistractedBy: parseCommaSeparatedList(
       rawData["Driver Distracted By"]
     ),
-    driverAge: parseNumber(rawData["Driver Age"]) || parseNumber(rawData["Age of Driver - Youngest Known"]) || parseNumber(rawData["Age of Driver - Oldest Known"]),
+    driverAge:
+      parseNumber(rawData["Driver Age"]) ||
+      parseNumber(rawData["Age of Driver - Youngest Known"]) ||
+      parseNumber(rawData["Age of Driver - Oldest Known"]),
     vulnerableUserTypes: parseSlashSeparatedList(
       rawData["Vulnerable User Type (All Persons)"]
     ),
@@ -153,15 +163,23 @@ export const parseDataRow = (rawData: RawCrashDataRow): DataRow => {
     nonFatalInjuries: parseNumber(rawData["Total Non-Fatal Injuries"]),
     weatherConditions: rawData["Weather Conditions"],
     crashTime: parseTime(rawData["Crash Time"]),
-    severity: rawData["Max Injury Severity Reported"].replace('Non-fatal injury - ','').replace(' Injury','').replace(/\s*[(].*[)]/,''),
+    severity: rawData["Max Injury Severity Reported"]
+      .replace("Non-fatal injury - ", "")
+      .replace(" Injury", "")
+      .replace(/\s*[(].*[)]/, ""),
+    manner: rawData["Manner of Collision"],
+    speedLimit: rawData["Speed Limit"],
+    light: rawData["Light Conditions"],
+    event: rawData["First Harmful Event"],
     cyclists: 0,
     pedestrians: 0,
     skateboarders: 0,
     wheelchairs: 0,
     scooters: 0,
     otherVRU: 0,
-    crashMonth : parseDate(rawData["Crash Date"]).getMonth()+1
+    crashMonth: parseDate(rawData["Crash Date"]).getMonth() + 1,
   };
+  dataRow.crashHour = Math.floor(dataRow.crashTime / 60);
   for (let i = 0; i < dataRow.vulnerableUserTypes.length; i++) {
     if (dataRow.vulnerableUserTypes[i].includes("Bicyclist")) {
       dataRow.cyclists++;

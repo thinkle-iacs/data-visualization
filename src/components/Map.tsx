@@ -62,13 +62,14 @@ export const MapComponent = ({ data }: { data: DataRow[] }) => {
                         color: "#222",
                       }}
                     >
+                      {console.log("theDataPoint", theDataPoint) ? "" : ""}
                       {theDataPoint.crashDate.toDateString()}
                       <br />
                       {theDataPoint.cityTownName}
                       <br />
                       {theDataPoint.vulnerableUserTypes.join(", ")}
                       <br />
-                      {theDataPoint.fatalities ? "Fatal" : "Non-fatal"}
+                      {theDataPoint.fatalities ? "Fatal" : theDataPoint.nonFatalInjuries ? theDataPoint.severity : "No injury"}
                       <br />
                       {theDataPoint.weatherConditions}
                       <br />
