@@ -62,14 +62,27 @@ export const MapComponent = ({ data }: { data: DataRow[] }) => {
                         color: "#222",
                       }}
                     >
+                      {/* 
+                        This next line is just a lazy way to spit a data point out in the console
+                        for inspection. Makes it easy to see a given data point if I decide I want
+                        to change up what I'm doing with it.
+                      */}
                       {console.log("theDataPoint", theDataPoint) ? "" : ""}
+                      {/*
+                      End lazy console log code :-)
+                      */}
                       {theDataPoint.crashDate.toDateString()}
                       <br />
                       {theDataPoint.cityTownName}
                       <br />
                       {theDataPoint.vulnerableUserTypes.join(", ")}
                       <br />
-                      {theDataPoint.fatalities ? "Fatal" : theDataPoint.nonFatalInjuries ? theDataPoint.severity : "No injury"}
+                      Injury:{" "}
+                      {theDataPoint.fatalities
+                        ? "Fatal"
+                        : theDataPoint.nonFatalInjuries
+                        ? theDataPoint.severity
+                        : "No injury"}
                       <br />
                       {theDataPoint.weatherConditions}
                       <br />
